@@ -1,0 +1,47 @@
+--------------------------------------------------------------------------------
+ACTIVITAT AVALUABLE AC3
+--------------------------------------------------------------------------------
+Mòdul: MP08- Desplegament d'aplicacions web
+--------------------------------------------------------------------------------
+UF: UF2  -  Servidors d'aplicacions web
+--------------------------------------------------------------------------------
+Professor: Albert Guardiola
+--------------------------------------------------------------------------------
+Data límit d'entrega: 9/01/2025 23:59	
+--------------------------------------------------------------------------------
+Mètode d'entrega: Per mitjà del Clickedu de l'assignatura. Les activitats entregades més enllà de la data límit només podran obtenir una nota de 5.
+--------------------------------------------------------------------------------
+Instruccions: S'ha d'entregar un únic document amb el nom:
+--------------------------------------------------------------------------------
+	MP08-UF2-AC3-Nom_Alumne.doc (o pdf)
+--------------------------------------------------------------------------------
+Es valorará la presentació.
+
+--------------------------------------------------------------------------------
+Resultats de l'aprenentatge: 
+--------------------------------------------------------------------------------
+RA1. Implanta aplicacions web en servidors d'aplicacions avaluant i aplicant criteris de configuració per al seu funcionament segur.
+
+S'ajunta:
+   -Frontend de `BIBLIOTECA DE LLIBRES' (`cliente_otro_dominio').
+   -Backend MVC en NodeJS amb els mètodes GET i POST implementats (`backend_express_mvc).
+
+Tasques:
+Tasca  0. Analitzar el codi del backend que s'adjunta. Notar que:
+   -A models es declara una classe Library que abstrau respecte el controlador la connexió a la base de dades. En aquesta classe:
+   	-El constructor crea una connexió a la base de dades, en format promesa.
+   	-Aquesta connexió es guarda a la propietat connection de la classe.
+      -La classe té mètodes per fer les operaciones necessàries sobre la base de dades.
+      -La connexió a la base de dades es fa per mitjà del paquet mysql2:
+      	https://www.npmjs.com/package/mysql2
+   -Els controladors continuen sent els encarregats de donar una resposta a les peticions HTTP: res.json(...). Però deleguen en el model de dades la gestió de la base de dades. 
+      -Per fer-ho, cadascuna de les funcions del controlador instancia la classe Library i crida els seus mètodes.
+
+
+Tasca 1. Completa el backend amb les funcionalitats de modificació i esborrament de llibres. 
+
+Tasca 2. Canviar només el model Library perquè l'aplicació treballi amb una connexió MongoDB. Podeu fer servir el paquet mongodb:
+https://www.npmjs.com/package/mongodb
+
+
+                                       
