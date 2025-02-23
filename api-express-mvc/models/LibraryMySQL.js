@@ -32,7 +32,6 @@ class Library {
 
     // métodos de la clase Library
     listAll = async () => {
-        console.log(this.connection)
         // const [results, fields] = await this.connection.query("SELECT * FROM books");
         const [results, _] = await this.connection.query("SELECT * FROM books");
         return results;
@@ -51,10 +50,7 @@ class Library {
 
     update = async (id, newBook) => {
         try {
-            console.log("hunter2", id, newBook)
             const [results, fields] = await this.connection.execute("UPDATE books SET title = ?, author = ?, year = ? WHERE id = ?", [newBook.title, newBook.author, newBook.year, id]);
-            console.log(results)
-            console.log("hunter2", id, newBook)
             return true;
         }
         catch (error) {

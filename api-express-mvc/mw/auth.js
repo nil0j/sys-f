@@ -28,14 +28,15 @@ function generateToken(user) {
 }
 
 function authenticateToken(req, res, next) {
-    const token = req.headers['authorization']
+    let header = req.headers['authorization']
+    let token =  header && header.split(' ')[1]
+    console.log("token", token)
 
-    if (token == null) return res.sendStatus(401)
+     if (token == null) return res.sendStatus(401)
 
-    jwt.verify(token, process.env.TOKEN, (err, user) => {
+    jwt.verify(token, process.env.TOKEN, (err) => {
         console.log(err)
         if (err) return res.sendStatus(403)
-        req.user = user
         next()
     })
 }

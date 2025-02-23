@@ -1,16 +1,10 @@
-/* change to switch Library file */
-const useMongo = false
-
-const LibraryMongo = require('../models/LibraryMongo')
-const LibrarySql = require('../models/LibraryMySQL')
-
-const Library = useMongo ? LibraryMongo : LibrarySql
+const Patchouli = require('../models/Patchouli')
 
 // Declaración de controladores 
 const getBooks = (async (_, res) => {
     try {
         // Instanciamos un modelo Library
-        let library = new Library({});
+        let library = new Patchouli({});
         // Lo usamos para listar libros
         let books = await library.listAll();
         res.json(books);
@@ -24,8 +18,7 @@ const getBooks = (async (_, res) => {
 const createBook = (async (req, res) => {
     try {
         // Instanciamos un modelo Library
-        console.log("hello")
-        let library = new Library({});
+        let library = new Patchouli({});
 
         // Creamos un libro nuevo
         const newBook = {
@@ -54,7 +47,7 @@ const createBook = (async (req, res) => {
 })
 
 const updateBook = (async (req, res) => {
-    let library = new Library({});
+    let library = new Patchouli({});
     try {
         // Instanciamos un modelo Library
 
@@ -88,7 +81,7 @@ const updateBook = (async (req, res) => {
 })
 
 const deleteBook = (async (req, res) => {
-    let library = new Library({});
+    let library = new Patchouli({});
     try {
         // Instanciamos un modelo Library
 

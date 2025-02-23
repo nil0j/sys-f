@@ -1,3 +1,6 @@
+// globals //
+let authorizationHeader = ""
+
 
 window.onload = () => {
     // Pedimos a la API los libros actuales en base de datos
@@ -5,15 +8,12 @@ window.onload = () => {
 
     // Añadimos al botón de submit del formulario un listener para enlazarlo a la función createBook
     document.querySelector('#createButton').addEventListener('click', createBook);
-
-    document.querySelector('#downloadButton').addEventListener('click', downloadVideo);
 }
 
 async function fetchBooks() {
     let apiUrl = "http://localhost:5000/api/books";
     let res = await fetch(apiUrl);
     let books = await res.json();
-    // console.log(books);
 
     //Borramos el contenido de la tabla
     eraseTable();
@@ -80,18 +80,17 @@ async function deleteBook(event) {
         "id": id
     }
 
-    let response = await fetch(apiUrl, {
+    console.log("Authorization: ", authorizationHeader)
+
+    await fetch(apiUrl, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": authorizationHeader,
         },
         body: JSON.stringify(deletedBook)
     });
-    let json = await response.json()
-    // Muestra respuesta de la API (JSON) por consola
-    console.log(json);
 
-    // Volvemos a pedir libros
     fetchBooks();
 }
 
@@ -112,18 +111,15 @@ async function editBook(event) {
         "author": autor,
         "year": ano
     }
-    let response = await fetch(apiUrl, {
+    await fetch(apiUrl, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": authorizationHeader,
         },
         body: JSON.stringify(modifiedBook)
     });
-    let json = await response.json()
-    // Muestra respuesta de la API (JSON) por consola
-    console.log(json);
 
-    //Volvemos a pedir libros
     fetchBooks();
 }
 
@@ -137,75 +133,56 @@ async function createBook(event) {
     // p.ej. { "title": "titulo", "author": "autor", "year": 1980 }
     // No añadir id, es autoincremental
     let apiUrl = "http://localhost:5000/api/books";
+
     let newBook = {
         title: titulo,
         author: autor,
         year: ano
     }
-    let response = await fetch(apiUrl, {
+
+    await fetch(apiUrl, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": authorizationHeader,
         },
         body: JSON.stringify(newBook)
     });
-    let json = await response.json()
-    // Muestra respuesta de la API (JSON) por consola
-    console.log(json);
 
-    //Volvemos a pedir libros
     fetchBooks();
 }
 
-function downloadVideo() {
-    console.log('Donwloading video...');
-    // 1. Create a new XMLHttpRequest object
-    let xhr = new XMLHttpRequest();
 
-    // 2. Configure it: GET-request for the URL /article/.../load
-    xhr.open('GET', './vid.mp4');
 
-    // 3. Set the responseType to 'blob' to handle binary data
-    xhr.responseType = 'blob';
+/// JWT ///
+const lockIcon = {
+    closed: "&#x1f512;",
+    open: "&#x1f513;",
+}
 
-    // 4. Send the request over the network
-    xhr.send();
+const lockButton = document.getElementById("lock")
+const lockInput = document.getElementById("lock-input")
+lockButton.addEventListener("click", triggerTokenPopup)
 
-    // 5. This will be called after the response is received
-    xhr.onload = function () {
-        if (xhr.status != 200) { // analyze HTTP status of the response
-            console.log(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
-        } else { // show the result
-            console.log(`Done downloading video!`); // response is the server response
+let tokenPopupOpen = true;
 
-            // CREATE A TEMPORARY DOWNLOAD LINK
-            // Create a blob URL for the video
-            console.log(`Creating download link!`);
-            const blob = new Blob([xhr.response], { type: 'video/mp4' });
-            const url = URL.createObjectURL(blob);
+function triggerTokenPopup(_) {
+    tokenPopupOpen ? closeTokenPopup() : openTokenPopup()
+    tokenPopupOpen = !tokenPopupOpen
+}
 
-            // Create a temporary download link
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'downloaded_video.mp4'; // Suggested file name
-            document.body.appendChild(a);
-            a.click();
+function closeTokenPopup() {
+    lockButton.innerHTML = lockIcon.closed
 
-            // Remove the temporary link
-            document.body.removeChild(a);
-        }
-    };
+    let token = lockInput.value
+    authorizationHeader = `Bearer ${token}`
+    lockInput.value = ""
+    lockInput.style.visibility = "hidden"
+    console.log(authorizationHeader)
+}
 
-    xhr.onprogress = function (event) {
-        if (event.lengthComputable) {
-            console.log(`Received ${event.loaded} of ${event.total} bytes`);
-        } else {
-            console.log(`Received ${event.loaded} bytes`); // no Content-Length
-        }
-
-    };
-
-    xhr.onerror = function () {
-        alconsole.log("Request failed");
-    };
+function openTokenPopup() {
+    lockButton.innerHTML = lockIcon.open
+    lockInput.style.visibility = "visible"
+    authorizationHeader = ""
 }

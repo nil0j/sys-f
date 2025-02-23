@@ -30,7 +30,6 @@ class Library {
         this.collection = await dbConfig.connect(client)
 
         try {
-            console.log("new book: ", newBook)
             await this.collection.insertOne(newBook);
             return true;
         } catch (error) {
@@ -49,7 +48,6 @@ class Library {
                 year: newBook.year
             };
 
-            console.log("starting");
             try {
             await this.collection.updateOne(
                 {  _id: new mongodb.ObjectId(id) },
@@ -58,8 +56,6 @@ class Library {
             } catch(e) {
                 console.log(e)
             }
-
-            console.log("updated");
 
             return true;
         } catch (error) {
@@ -72,7 +68,6 @@ class Library {
         this.collection = await dbConfig.connect(client)
         try {
             let object_id = new mongodb.ObjectId(id)
-            console.log("id: ", id)
             await this.collection.findOneAndDelete(
                 { _id: object_id }
             );
