@@ -109,12 +109,12 @@ As for the frontend of the page,
 #underline[no changes were required according to the instructions].
 
 Insert your token in the input box
-and lock it with the lock button.
+and lock it with the lock button
+(careful with the extra spaces!!).
 Negated requests will not be notified
 since that wasn't specified anywhere,
 and for logins you still have to use
-an application like curlie or the like
-(careful with the extra spaces!!).
+an application like curlie or the like.
 
 #image("13.png")
 #image("12.png")
